@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compound Interest Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -17,7 +16,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Stepper buttons: hidden by default, comfortably sized, and reveal on hover/focus */
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
       opacity: 0;
@@ -42,7 +40,6 @@
       -moz-appearance: number-input;
     }
 
-    /* Ultra-sleek compact custom range slider */
     input[type=range] {
       -webkit-appearance: none;
       appearance: none;
@@ -83,7 +80,6 @@
       cursor: grab;
     }
 
-    /* Scrollbar styling */
     ::-webkit-scrollbar {
       width: 5px;
       height: 5px;
@@ -99,7 +95,6 @@
 </head>
 <body class="min-h-screen flex items-center justify-center p-2.5 sm:p-4 selection:bg-blue-600/30">
 
-  <!-- Compact Widget Container (Exact dimension: max-w-[425px], p-4 sm:p-5) -->
   <div class="w-full max-w-[425px] bg-[#151a22] border border-[#222a38] rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-5 flex flex-col transition-all duration-200">
     
     <!-- Top Value Header -->
@@ -107,13 +102,12 @@
       <div class="flex items-center justify-between gap-2 mb-1">
         <span class="text-[11px] font-medium tracking-wide text-gray-400 uppercase">Estimated future investment value</span>
         <div class="flex items-center gap-1.5">
-          <!-- Adaptive Compounding frequency selector -->
           <div class="flex items-center gap-1 bg-[#12161f] border border-[#232b39] rounded-md px-1.5 py-0.5">
             <select id="compoundFrequency" class="bg-transparent text-[10px] font-medium text-gray-300 focus:outline-none cursor-pointer">
-              <option value="12" class="bg-[#151a22]" selected>Monthly</option>
+              <option value="12" class="bg-[#151a22]">Monthly</option>
               <option value="4" class="bg-[#151a22]">Quarterly</option>
               <option value="2" class="bg-[#151a22]">Semi-Annually</option>
-              <option value="1" class="bg-[#151a22]">Annually</option>
+              <option value="1" class="bg-[#151a22]" selected>Annually</option>
             </select>
           </div>
           <button id="toggleTableModalBtn" title="View Schedule Table" class="flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium rounded-md border border-gray-700 bg-gray-800/80 hover:bg-gray-700 text-gray-300 transition">
@@ -125,33 +119,32 @@
 
       <div class="flex items-baseline gap-2 flex-wrap">
         <h1 id="totalValueDisplay" class="text-3xl sm:text-[34px] font-extrabold text-white tracking-tight leading-tight">
-          $4,172,842
+          $0
         </h1>
-        <!-- Real Purchasing Power Badge (Hidden when inflation is OFF) -->
         <span id="realPurchasingPowerBadge" class="hidden text-[11px] text-amber-400 font-medium bg-amber-950/40 border border-amber-800/40 px-2 py-0.5 rounded-full items-center gap-1 shadow-sm">
           <i class="fa-solid fa-scale-balanced text-[10px]"></i>
-          <span class="whitespace-nowrap">Real: <strong id="realValueSummary" class="text-amber-300 font-bold">$1,553,889</strong></span>
+          <span class="whitespace-nowrap">Real: <strong id="realValueSummary" class="text-amber-300 font-bold">$0</strong></span>
         </span>
       </div>
     </div>
 
-    <!-- Summary Metrics (Principal, Contributions, Interest - Centered) -->
+    <!-- Summary Metrics -->
     <div class="grid grid-cols-3 gap-1.5 py-2 border-t border-b border-[#202735] text-center">
       <div class="flex flex-col items-center">
         <div class="text-[10px] text-gray-400 font-medium mb-0.5">Principal</div>
-        <div id="summaryPrincipal" class="text-xs sm:text-sm font-bold text-white truncate">$100,000</div>
+        <div id="summaryPrincipal" class="text-xs sm:text-sm font-bold text-white truncate">$0</div>
       </div>
       <div class="flex flex-col items-center">
         <div class="text-[10px] text-gray-400 font-medium mb-0.5">Contributions</div>
-        <div id="summaryContributions" class="text-xs sm:text-sm font-bold text-white truncate">$240,000</div>
+        <div id="summaryContributions" class="text-xs sm:text-sm font-bold text-white truncate">$0</div>
       </div>
       <div class="flex flex-col items-center">
         <div class="text-[10px] text-gray-400 font-medium mb-0.5">Interest growth</div>
-        <div id="summaryInterest" class="text-xs sm:text-sm font-bold text-emerald-400 truncate">$3,832,842</div>
+        <div id="summaryInterest" class="text-xs sm:text-sm font-bold text-emerald-400 truncate">$0</div>
       </div>
     </div>
 
-    <!-- Compact Legend (Centered Above Chart) -->
+    <!-- Compact Legend -->
     <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-2 pb-1 text-[10px] text-gray-300">
       <div class="flex items-center gap-1.5">
         <span class="w-2 h-2 rounded-full bg-[#1e40af] inline-block"></span>
@@ -171,40 +164,39 @@
       </div>
     </div>
 
-    <!-- Compact Chart Area (Exact 210px height) -->
+    <!-- Compact Chart Area -->
     <div class="relative w-full h-[210px] select-none my-1">
       <canvas id="growthCanvas" class="w-full h-full block rounded-lg cursor-crosshair"></canvas>
 
-      <!-- Sleek Compact Tooltip -->
+      <!-- Tooltip -->
       <div id="chartTooltip" class="absolute pointer-events-none transform -translate-x-1/2 -translate-y-full transition-opacity duration-100 opacity-0 bg-[#12161f]/95 backdrop-blur-md border border-[#273245] text-white px-2.5 py-2 rounded-lg shadow-xl z-30 min-w-[160px]">
         <div class="flex items-center justify-between border-b border-gray-800 pb-1 mb-1">
-          <span id="tooltipYear" class="text-[10px] font-semibold text-gray-400 uppercase">Year 28</span>
+          <span id="tooltipYear" class="text-[10px] font-semibold text-gray-400 uppercase">Year 0</span>
           <span id="tooltipNominalPercent" class="text-[10px] text-emerald-400 font-bold"></span>
         </div>
-        <div class="text-sm font-bold text-white mb-1 leading-none" id="tooltipTotal">$1,556,659</div>
+        <div class="text-sm font-bold text-white mb-1 leading-none" id="tooltipTotal">$0</div>
         <div class="space-y-0.5 text-[10px] text-gray-300">
           <div class="flex justify-between items-center">
             <span class="flex items-center gap-1 text-gray-400"><span class="w-1.5 h-1.5 rounded-full bg-[#1e40af]"></span> Principal</span>
-            <span id="tooltipPrincipal" class="font-medium text-gray-200">$100,000</span>
+            <span id="tooltipPrincipal" class="font-medium text-gray-200">$0</span>
           </div>
           <div class="flex justify-between items-center">
             <span class="flex items-center gap-1 text-gray-400"><span class="w-1.5 h-1.5 rounded-full bg-[#2563eb]"></span> Contribs</span>
-            <span id="tooltipContributions" class="font-medium text-gray-200">$168,000</span>
+            <span id="tooltipContributions" class="font-medium text-gray-200">$0</span>
           </div>
           <div class="flex justify-between items-center">
             <span class="flex items-center gap-1 text-gray-400"><span class="w-1.5 h-1.5 rounded-full bg-[#22c55e]"></span> Interest</span>
-            <span id="tooltipInterest" class="font-medium text-emerald-400">$1,288,659</span>
+            <span id="tooltipInterest" class="font-medium text-emerald-400">$0</span>
           </div>
-          <!-- Real purchasing row (Only when inflation ON) -->
           <div id="tooltipInflationRow" class="hidden flex justify-between items-center pt-1 border-t border-gray-800 text-amber-300 font-medium">
             <span id="tooltipInflationLabel" class="flex items-center gap-1 text-amber-400/90 text-[9px]">Purchasing power</span>
-            <span id="tooltipInflation" class="font-bold text-amber-300">$780,450</span>
+            <span id="tooltipInflation" class="font-bold text-amber-300">$0</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Sliders and Inputs (Clean, Compact, Centered Numbers with Hover-Reveal Steppers) -->
+    <!-- Sliders and Inputs -->
     <div class="space-y-2.5 pt-2 border-t border-[#202735]">
 
       <!-- Starting principal -->
@@ -213,10 +205,10 @@
           <span class="text-gray-300 font-medium text-[11px] sm:text-xs">Starting principal</span>
           <div class="input-wrapper flex items-center bg-[#1b222d] px-2 py-0.5 rounded border border-[#273244] hover:border-gray-500 focus-within:border-blue-500 transition-colors shadow-inner">
             <span class="text-gray-500 text-[11px] mr-1">$</span>
-            <input type="number" id="inputPrincipal" min="0" max="5000000" step="1000" value="100000" class="bg-transparent text-center font-semibold text-white text-xs w-20 px-0.5 focus:outline-none">
+            <input type="number" id="inputPrincipal" min="0" max="5000000" step="1000" value="0" placeholder="0" class="bg-transparent text-center font-semibold text-white text-xs w-20 px-0.5 focus:outline-none">
           </div>
         </div>
-        <input type="range" id="sliderPrincipal" min="0" max="1000000" step="1000" value="100000">
+        <input type="range" id="sliderPrincipal" min="0" max="1000000" step="1000" value="0">
       </div>
 
       <!-- Monthly contribution -->
@@ -225,38 +217,38 @@
           <span class="text-gray-300 font-medium text-[11px] sm:text-xs">Monthly contribution</span>
           <div class="input-wrapper flex items-center bg-[#1b222d] px-2 py-0.5 rounded border border-[#273244] hover:border-gray-500 focus-within:border-blue-500 transition-colors shadow-inner">
             <span class="text-gray-500 text-[11px] mr-1">$</span>
-            <input type="number" id="inputContribution" min="0" max="20000" step="50" value="500" class="bg-transparent text-center font-semibold text-white text-xs w-16 px-0.5 focus:outline-none">
+            <input type="number" id="inputContribution" min="0" max="20000" step="50" value="0" placeholder="0" class="bg-transparent text-center font-semibold text-white text-xs w-16 px-0.5 focus:outline-none">
             <span class="text-gray-500 text-[10px] ml-1">/mo</span>
           </div>
         </div>
-        <input type="range" id="sliderContribution" min="0" max="10000" step="50" value="500">
+        <input type="range" id="sliderContribution" min="0" max="10000" step="50" value="0">
       </div>
 
-      <!-- Investment horizon -->
+      <!-- Investment horizon (Default: 20 Years) -->
       <div class="space-y-0.5">
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-300 font-medium text-[11px] sm:text-xs">Investment horizon</span>
           <div class="input-wrapper flex items-center bg-[#1b222d] px-2 py-0.5 rounded border border-[#273244] hover:border-gray-500 focus-within:border-blue-500 transition-colors shadow-inner">
-            <input type="number" id="inputHorizon" min="1" max="50" step="1" value="40" class="bg-transparent text-center font-semibold text-white text-xs w-12 px-0.5 focus:outline-none">
+            <input type="number" id="inputHorizon" min="1" max="50" step="1" value="20" placeholder="20" class="bg-transparent text-center font-semibold text-white text-xs w-12 px-0.5 focus:outline-none">
             <span class="text-gray-500 text-[10px] ml-1">Years</span>
           </div>
         </div>
-        <input type="range" id="sliderHorizon" min="1" max="50" step="1" value="40">
+        <input type="range" id="sliderHorizon" min="1" max="50" step="1" value="20">
       </div>
 
-      <!-- Expected annual return -->
+      <!-- Expected annual return (Default: 10.0%) -->
       <div class="space-y-0.5">
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-300 font-medium text-[11px] sm:text-xs">Expected annual return</span>
           <div class="input-wrapper flex items-center bg-[#1b222d] px-2 py-0.5 rounded border border-[#273244] hover:border-gray-500 focus-within:border-blue-500 transition-colors shadow-inner">
-            <input type="number" id="inputReturn" min="0" max="30" step="0.1" value="8.0" class="bg-transparent text-center font-semibold text-white text-xs w-12 px-0.5 focus:outline-none">
+            <input type="number" id="inputReturn" min="0" max="30" step="0.1" value="10.0" placeholder="10.0" class="bg-transparent text-center font-semibold text-white text-xs w-12 px-0.5 focus:outline-none">
             <span class="text-gray-500 text-[10px] ml-1">%</span>
           </div>
         </div>
-        <input type="range" id="sliderReturn" min="0" max="25" step="0.1" value="8.0">
+        <input type="range" id="sliderReturn" min="0" max="25" step="0.1" value="10.0">
       </div>
 
-      <!-- Inflation Option (DEFAULT OFF) -->
+      <!-- Inflation Option -->
       <div class="pt-1.5 border-t border-[#202735]">
         <div class="flex items-center justify-between py-0.5">
           <div class="flex items-center gap-1.5">
@@ -265,14 +257,12 @@
             <span class="text-[9px] text-gray-400 bg-gray-800 border border-gray-700 px-1 py-0.5 rounded leading-none">Optional</span>
           </div>
 
-          <!-- Toggle switch (Starts UNCHECKED / OFF) -->
           <label class="relative inline-flex items-center cursor-pointer select-none">
             <input type="checkbox" id="inflationToggleSwitch" class="sr-only peer">
             <div class="w-7 h-3.5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-amber-500"></div>
           </label>
         </div>
 
-        <!-- Collapsible Inflation Controls (Hidden by default) -->
         <div id="inflationControlsWrapper" class="hidden mt-1.5 p-2 bg-[#12161f] rounded-lg border border-[#222d3d] space-y-1.5">
           <div class="flex items-center justify-between text-xs">
             <span class="text-amber-200 font-medium text-[11px]">Expected annual inflation</span>
@@ -284,7 +274,6 @@
 
           <input type="range" id="sliderInflation" min="0" max="10" step="0.1" value="2.5">
 
-          <!-- Quick Presets -->
           <div class="flex items-center justify-between pt-0.5">
             <span class="text-[10px] text-gray-400">Presets:</span>
             <div class="flex gap-1">
@@ -294,7 +283,6 @@
             </div>
           </div>
 
-          <!-- Note -->
           <p class="text-[9px] text-gray-400 leading-tight pt-0.5 border-t border-[#1c2432]">
             <strong class="text-amber-300 font-medium">Note:</strong> Expected inflation is typically <strong class="text-gray-200">2.5% – 3.0%</strong> (historical average ~3.0%).
           </p>
@@ -304,7 +292,7 @@
     </div>
   </div>
 
-  <!-- Table Modal (Mobile & compact friendly) -->
+  <!-- Table Modal -->
   <div id="tableModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3">
     <div class="bg-[#151a22] border border-[#263142] w-full max-w-lg max-h-[80vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
       <div class="flex items-center justify-between p-3.5 border-b border-[#202936]">
@@ -343,15 +331,15 @@
   </div>
 
   <script>
-    // State - Inflation is FALSE (OFF) by default
+    // State explicitly initialized
     const state = {
-      principal: 100000,
-      monthlyContribution: 500,
-      horizonYears: 40,
-      annualReturn: 8.0,
+      principal: 0,
+      monthlyContribution: 0,
+      horizonYears: 20,
+      annualReturn: 10.0,
       inflationRate: 2.5,
-      compoundFrequency: 12, // Default monthly compounding
-      showInflation: false,  // Default is OFF
+      compoundFrequency: 1,
+      showInflation: false,
       hoverYearIndex: null
     };
 
@@ -405,56 +393,63 @@
     const tooltipInflation = document.getElementById('tooltipInflation');
     const tooltipNominalPercent = document.getElementById('tooltipNominalPercent');
 
-    const formatCurrency = (val) => '$' + Math.round(val).toLocaleString('en-US');
+    const formatCurrency = (val) => '$' + Math.round(val || 0).toLocaleString('en-US');
 
     function calculateData() {
       const { principal, monthlyContribution, horizonYears, annualReturn, inflationRate, compoundFrequency } = state;
-      const r = annualReturn / 100;
-      const n = compoundFrequency; // Compounding frequency per year
-      const inflationDecimal = inflationRate / 100;
+      const r = (annualReturn || 0) / 100;
+      const n = compoundFrequency || 1;
+      const inflationDecimal = (inflationRate || 0) / 100;
       const series = [];
 
-      let balance = principal;
+      let balance = principal || 0;
       let totalContributions = 0;
 
       series.push({
         year: 0,
-        principal,
+        principal: balance,
         contributions: 0,
         interest: 0,
-        totalNominal: principal,
-        realValue: principal
+        totalNominal: balance,
+        realValue: balance
       });
 
-      // Simulation month by month
-      for (let m = 1; m <= horizonYears * 12; m++) {
-        balance += monthlyContribution;
-        totalContributions += monthlyContribution;
+      if (horizonYears > 0) {
+        for (let m = 1; m <= horizonYears * 12; m++) {
+          balance += monthlyContribution;
+          totalContributions += monthlyContribution;
 
-        // Apply compounding based on compounding interval
-        const monthlyEffectiveRate = Math.pow(1 + r / n, n / 12) - 1;
-        balance += balance * monthlyEffectiveRate;
+          const monthlyEffectiveRate = Math.pow(1 + r / n, n / 12) - 1;
+          balance += balance * monthlyEffectiveRate;
 
-        if (m % 12 === 0) {
-          const yr = m / 12;
-          const interestGrowth = Math.max(0, balance - principal - totalContributions);
-          const realPurchasing = balance / Math.pow(1 + inflationDecimal, yr);
+          if (m % 12 === 0) {
+            const yr = m / 12;
+            const interestGrowth = Math.max(0, balance - principal - totalContributions);
+            const realPurchasing = balance / Math.pow(1 + inflationDecimal, yr);
 
-          series.push({
-            year: yr,
-            principal,
-            contributions: totalContributions,
-            interest: interestGrowth,
-            totalNominal: balance,
-            realValue: realPurchasing
-          });
+            series.push({
+              year: yr,
+              principal,
+              contributions: totalContributions,
+              interest: interestGrowth,
+              totalNominal: balance,
+              realValue: realPurchasing
+            });
+          }
         }
       }
       return series;
     }
 
     function updateMetrics(series) {
-      const finalPoint = series[series.length - 1];
+      const finalPoint = series[series.length - 1] || {
+        totalNominal: 0,
+        principal: 0,
+        contributions: 0,
+        interest: 0,
+        realValue: 0
+      };
+
       totalValueDisplay.textContent = formatCurrency(finalPoint.totalNominal);
       summaryPrincipal.textContent = formatCurrency(finalPoint.principal);
       summaryContributions.textContent = formatCurrency(finalPoint.contributions);
@@ -534,13 +529,19 @@
       const plotWidth = width - paddingLeft - paddingRight;
       const plotHeight = height - paddingTop - paddingBottom;
 
-      const maxNominal = Math.max(...cachedSeries.map(d => d.totalNominal));
-      const magnitude = Math.pow(10, Math.floor(Math.log10(maxNominal)));
-      const niceCeiling = Math.ceil(maxNominal / (magnitude / 2)) * (magnitude / 2);
-      const maxY = Math.max(niceCeiling, 1000);
+      const maxNominal = Math.max(0, ...cachedSeries.map(d => d.totalNominal));
+      let maxY = 1000;
+      if (maxNominal > 0) {
+        const magnitude = Math.pow(10, Math.floor(Math.log10(maxNominal)));
+        const niceCeiling = Math.ceil(maxNominal / (magnitude / 2)) * (magnitude / 2);
+        if (!isNaN(niceCeiling) && niceCeiling > 0) {
+          maxY = Math.max(niceCeiling, 1000);
+        }
+      }
 
-      const getX = (index) => paddingLeft + (index / (cachedSeries.length - 1)) * plotWidth;
-      const getY = (val) => paddingTop + plotHeight - (val / maxY) * plotHeight;
+      const divisor = Math.max(1, cachedSeries.length - 1);
+      const getX = (index) => paddingLeft + (index / divisor) * plotWidth;
+      const getY = (val) => paddingTop + plotHeight - (maxY > 0 ? (val / maxY) * plotHeight : 0);
 
       // Y-axis grid
       const steps = 4;
@@ -571,15 +572,19 @@
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillStyle = '#64748b';
-      const yearStep = state.horizonYears <= 10 ? 2 : state.horizonYears <= 25 ? 5 : 10;
-      for (let i = 0; i < cachedSeries.length; i++) {
-        const yr = cachedSeries[i].year;
-        if (yr === 0 || yr % yearStep === 0 || yr === state.horizonYears) {
-          ctx.fillText(`Yr ${yr}`, getX(i), paddingTop + plotHeight + 5);
+      if (cachedSeries.length <= 1) {
+        ctx.fillText('Yr 0', getX(0), paddingTop + plotHeight + 5);
+      } else {
+        const yearStep = state.horizonYears <= 10 ? 2 : state.horizonYears <= 25 ? 5 : 10;
+        for (let i = 0; i < cachedSeries.length; i++) {
+          const yr = cachedSeries[i].year;
+          if (yr === 0 || yr % yearStep === 0 || yr === state.horizonYears) {
+            ctx.fillText(`Yr ${yr}`, getX(i), paddingTop + plotHeight + 5);
+          }
         }
       }
 
-      // Layer 1: Starting Principal
+      // Layer 1: Principal
       ctx.beginPath();
       ctx.moveTo(getX(0), getY(0));
       for (let i = 0; i < cachedSeries.length; i++) {
@@ -631,7 +636,7 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Inflation dashed curve (ONLY if enabled)
+      // Inflation dashed curve
       if (state.showInflation) {
         ctx.save();
         ctx.beginPath();
@@ -664,7 +669,6 @@
         ctx.stroke();
         ctx.restore();
 
-        // Green dot
         ctx.beginPath();
         ctx.arc(ptX, ptY, 4, 0, Math.PI * 2);
         ctx.fillStyle = '#22c55e';
@@ -673,7 +677,6 @@
         ctx.strokeStyle = '#ffffff';
         ctx.stroke();
 
-        // Inflation dot
         if (state.showInflation) {
           const inflY = getY(cachedSeries[idx].realValue);
           ctx.beginPath();
@@ -695,6 +698,7 @@
     }
 
     function handlePointer(clientX) {
+      if (!cachedSeries || cachedSeries.length === 0) return;
       const rect = canvas.getBoundingClientRect();
       const paddingLeft = 46;
       const paddingRight = 10;
@@ -702,7 +706,7 @@
 
       const relX = clientX - rect.left - paddingLeft;
       const ratio = Math.max(0, Math.min(1, relX / plotWidth));
-      const targetIndex = Math.round(ratio * (cachedSeries.length - 1));
+      const targetIndex = cachedSeries.length > 1 ? Math.round(ratio * (cachedSeries.length - 1)) : 0;
 
       state.hoverYearIndex = targetIndex;
       drawChart();
@@ -715,12 +719,18 @@
       tooltipInterest.textContent = formatCurrency(pt.interest);
       tooltipInflation.textContent = formatCurrency(pt.realValue);
 
-      const targetX = paddingLeft + (targetIndex / (cachedSeries.length - 1)) * plotWidth;
-      const maxNominal = Math.max(...cachedSeries.map(d => d.totalNominal));
-      const magnitude = Math.pow(10, Math.floor(Math.log10(maxNominal)));
-      const niceCeiling = Math.ceil(maxNominal / (magnitude / 2)) * (magnitude / 2);
-      const maxY = Math.max(niceCeiling, 1000);
-      const targetY = 10 + (rect.height - 10 - 20) - (pt.totalNominal / maxY) * (rect.height - 10 - 20);
+      const divisor = Math.max(1, cachedSeries.length - 1);
+      const targetX = paddingLeft + (targetIndex / divisor) * plotWidth;
+      const maxNominal = Math.max(0, ...cachedSeries.map(d => d.totalNominal));
+      let maxY = 1000;
+      if (maxNominal > 0) {
+        const magnitude = Math.pow(10, Math.floor(Math.log10(maxNominal)));
+        const niceCeiling = Math.ceil(maxNominal / (magnitude / 2)) * (magnitude / 2);
+        if (!isNaN(niceCeiling) && niceCeiling > 0) {
+          maxY = Math.max(niceCeiling, 1000);
+        }
+      }
+      const targetY = 10 + (rect.height - 10 - 20) - (maxY > 0 ? (pt.totalNominal / maxY) * (rect.height - 10 - 20) : 0);
 
       let leftPos = targetX;
       let topPos = targetY - 10;
@@ -741,17 +751,17 @@
 
     function handleAutoCompound(prevVal, newVal) {
       if (newVal === 0 && prevVal !== 0) {
-        state.compoundFrequency = 1; // Annually for one-time investments
+        state.compoundFrequency = 1;
         if (compoundFrequencySelect) compoundFrequencySelect.value = '1';
       } else if (newVal > 0 && prevVal === 0) {
-        state.compoundFrequency = 12; // Monthly when monthly contributions added
+        state.compoundFrequency = 12;
         if (compoundFrequencySelect) compoundFrequencySelect.value = '12';
       }
     }
 
     function bind(slider, input, key, fn = (v) => v) {
       slider.addEventListener('input', (e) => {
-        const val = fn(parseFloat(e.target.value));
+        const val = fn(parseFloat(e.target.value) || 0);
         const prevMonthly = state.monthlyContribution;
         state[key] = val;
         input.value = val;
@@ -762,8 +772,10 @@
 
         refresh();
       });
+
       input.addEventListener('input', (e) => {
-        const val = fn(parseFloat(e.target.value) || 0);
+        const raw = e.target.value.trim();
+        const val = raw === '' ? 0 : fn(parseFloat(raw) || 0);
         const prevMonthly = state.monthlyContribution;
         state[key] = val;
         slider.value = val;
@@ -777,7 +789,19 @@
     }
 
     function init() {
-      // Auto-set compound frequency based on starting monthly contribution
+      // Force programmatic sync on initial run
+      state.horizonYears = 20;
+      state.annualReturn = 10.0;
+      inputHorizon.value = '20';
+      sliderHorizon.value = '20';
+      inputReturn.value = '10.0';
+      sliderReturn.value = '10.0';
+
+      inputPrincipal.value = '0';
+      sliderPrincipal.value = '0';
+      inputContribution.value = '0';
+      sliderContribution.value = '0';
+
       if (state.monthlyContribution === 0) {
         state.compoundFrequency = 1;
         if (compoundFrequencySelect) compoundFrequencySelect.value = '1';
@@ -792,7 +816,6 @@
       bind(sliderReturn, inputReturn, 'annualReturn');
       bind(sliderInflation, inputInflation, 'inflationRate');
 
-      // Manual compounding change
       if (compoundFrequencySelect) {
         compoundFrequencySelect.addEventListener('change', (e) => {
           state.compoundFrequency = parseInt(e.target.value, 10);
@@ -800,7 +823,6 @@
         });
       }
 
-      // Inflation switch starts OFF
       inflationToggleSwitch.checked = false;
       state.showInflation = false;
 
@@ -819,7 +841,6 @@
         });
       });
 
-      // Modal events
       toggleTableModalBtn.addEventListener('click', () => {
         tableModal.classList.remove('hidden');
         tableModal.classList.add('flex');
@@ -832,7 +853,6 @@
       closeTableModalBtn2.addEventListener('click', closeModal);
       tableModal.addEventListener('click', (e) => { if (e.target === tableModal) closeModal(); });
 
-      // Pointer & Touch
       canvas.addEventListener('mousemove', (e) => handlePointer(e.clientX));
       canvas.addEventListener('mouseleave', hideTooltip);
       canvas.addEventListener('touchmove', (e) => {
